@@ -6,15 +6,17 @@
     </div>
 
     <div class="mt-10">
-      {{  jobs }}
+      <Job v-for="job in jobs" :key="job.id" :job="job" />
     </div>
   </div>
 </template>
 
 <script>
 import gql from 'graphql-tag';
+import Job from "../components/Job";
 
 export default {
+  components: {Job},
   apollo: {
     jobs: {
       query: gql`
@@ -24,6 +26,14 @@ export default {
          ) {
             id,
             job_title,
+            job_location,
+            job_link,
+            company_name,
+            company_logo,
+            tags {
+                title,
+                slug
+            }
           }
          }
       `,
