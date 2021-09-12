@@ -32,7 +32,13 @@
         </div>
 
         <div class="mb-4">
-          Tags Here
+          <label for="tags" class="inline-block mb-1 font-medium">Tags</label>
+
+          <v-select inputId="tags" :options="tags" label="title" :reduce="tag => tag.id" multiple v-model="form.tags" class="border-2 border-gray-200 rounded-lg" :class="{ 'border-red-500': errors['input.tags.connect'] }"></v-select>
+
+          <div class="text-sm text-red-500 mt-1" v-if="errors['input.tags.connect']">
+            {{ errors['input.tags.connect'][0] }}
+          </div>
         </div>
 
         <div class="mb-4">
@@ -103,6 +109,7 @@
 </template>
 
 <script>
+import ALL_TAGS from '@/graphql/AllTags.gql'
 
 export default {
   data () {
@@ -124,5 +131,10 @@ export default {
     }
   },
 
+  apollo: {
+    tags: {
+      query: ALL_TAGS
+    },
+  },
 }
 </script>
