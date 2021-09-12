@@ -110,6 +110,7 @@
 
 <script>
 import ALL_TAGS from '@/graphql/AllTags.gql'
+import CREATE_JOB_WITH_USER from '@/graphql/CreateJobWithUser.gql'
 
 export default {
   data () {
@@ -136,5 +137,38 @@ export default {
       query: ALL_TAGS
     },
   },
+
+  methods: {
+    createListing() {
+
+    },
+    createListingWithUser() {
+      this.$apollo.mutate({
+        mutation: CREATE_JOB_WITH_USER,
+        variables: this.form
+      }).then(() => {
+        this.$axios.$get('/sanctum/csrf-cookie').then(response => {
+          this.$auth.loginWith('laravelSanctum', {
+            data: {
+              email: this.form.user_email,
+              password: this.form.user_password,
+            }
+          }).then(() => {
+            this.$router.replace({ name: 'index' })
+          })
+        })
+      }).catch((e) => {
+        this.errors = e.graphQLErrors[0].extensions.validation
+      })
+    },
+    submit () {
+      if (!this.$auth.loggedIn) {
+        this.createListingWithUser()
+        return
+      }
+
+      this.createListing()
+    }
+  }
 }
 </script>
