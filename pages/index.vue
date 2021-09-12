@@ -6,11 +6,29 @@
     </div>
 
     <div class="mt-10">
-      Jobs Index
+      {{  jobs }}
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+import gql from 'graphql-tag';
+
+export default {
+  apollo: {
+    jobs: {
+      query: gql`
+         {
+          jobs(
+            orderBy: [{column: CREATED_AT, order: DESC}],
+         ) {
+            id,
+            job_title,
+          }
+         }
+      `,
+      fetchPolicy: 'network-only'
+    }
+  }
+}
 </script>
