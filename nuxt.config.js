@@ -37,10 +37,31 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
   ],
 
+  auth: {
+    strategies: {
+      laravelSanctum: {
+        provider: 'laravel/sanctum',
+        url: 'http://jobs.test',
+        endpoints: {
+          login: { url: '/api/login', method: 'post', propertyName: false },
+          logout: { url: '/api/logout', method: 'post'},
+          user: { url: '/api/user', method: 'get', propertyName: false}
+        },
+        tokenRequired: false,
+        tokenType: false
+      },
+    },
+  },
+
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: 'http://jobs.test',
+    credentials: true,
+  },
+
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
