@@ -4,7 +4,7 @@
       Jobs
     </nuxt-link>
     <div class="-mx-4 flex items-center flex-wrap">
-      <a href="" class="mx-4" exact-active-class="text-blue-500">Post a job</a>
+      <nuxt-link :to="{ name: 'jobs-create' }" class="mx-4" exact-active-class="text-blue-500">Post a job</nuxt-link>
       <template v-if="$auth.loggedIn">
         <span class="font-bold mx-4">{{ $auth.user.name }}</span>
         <nuxt-link :to="{ name: 'user-listings' }" class="mx-4" exact-active-class="text-blue-500">Manage listings</nuxt-link>
