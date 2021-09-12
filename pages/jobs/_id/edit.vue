@@ -78,6 +78,7 @@
 <script>
 import USER_JOB_BY_ID from '@/graphql/UserJobById.gql'
 import ALL_TAGS from '@/graphql/AllTags.gql'
+import UPDATE_JOB from '@/graphql/UpdateJob.gql'
 
 export default {
   data () {
@@ -104,6 +105,18 @@ export default {
     tags: {
       query: ALL_TAGS
     },
+  },
+  methods: {
+    submit () {
+      this.$apollo.mutate({
+        mutation: UPDATE_JOB,
+        variables: { ...this.me.jobs[0], tags: this.tagsIds }
+      }).then(() => {
+        this.$router.replace({ name: 'user-listings' })
+      }).catch((e) => {
+        this.errors = e.graphQLErrors[0].extensions.validation
+      })
+    }
   }
 }
 </script>
