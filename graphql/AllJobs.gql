@@ -1,0 +1,18 @@
+{
+  jobs(
+    orderBy: [{column: PINNED, order: DESC}, {column: CREATED_AT, order: DESC}],
+  ) {
+    id,
+    job_title,
+    job_location,
+    job_link,
+    highlighted,
+    pinned,
+    company_name,
+    company_logo,
+    tags {
+      title,
+      slug
+    }
+  }
+}

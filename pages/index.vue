@@ -12,31 +12,12 @@
 </template>
 
 <script>
-import gql from 'graphql-tag';
-import Job from "../components/Job";
+import ALL_TAGS from '@/graphql/AllJobs.gql'
 
 export default {
-  components: {Job},
   apollo: {
     jobs: {
-      query: gql`
-         {
-          jobs(
-            orderBy: [{column: CREATED_AT, order: DESC}],
-         ) {
-            id,
-            job_title,
-            job_location,
-            job_link,
-            company_name,
-            company_logo,
-            tags {
-                title,
-                slug
-            }
-          }
-         }
-      `,
+      query: ALL_TAGS,
       fetchPolicy: 'network-only'
     }
   }
