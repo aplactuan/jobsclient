@@ -3,7 +3,6 @@
     <form action="" class="w-6/12" v-if="me" @submit.prevent="submit">
       <div class="mb-10">
         <h2 class="mb-4 text-2xl font-bold">Listing details</h2>
-
         <div class="mb-4">
           <label for="job_title" class="inline-block mb-1 font-medium">Job title</label>
           <input type="text" name="job_title" id="job_title" class="bg-gray-200 border-2 border-gray-200 rounded-lg w-full h-10 px-4" :class="{ 'border-red-500': errors['input.job_title'] }" v-model="me.jobs[0].job_title">
@@ -68,9 +67,15 @@
         </div>
       </div>
 
-      <button type="submit" class="p-4 bg-blue-500 text-white font-medium rounded-lg">
-        Edit listing
-      </button>
+      <div class="flex">
+        <button type="submit" class="p-4 mr-4 bg-blue-500 text-white font-medium rounded-lg">
+          Edit listing
+        </button>
+
+        <button type="button" @click="deleteJob" class="p-4 bg-blue-500 text-white font-medium rounded-lg">
+          Delete listing
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -79,6 +84,7 @@
 import USER_JOB_BY_ID from '@/graphql/UserJobById.gql'
 import ALL_TAGS from '@/graphql/AllTags.gql'
 import UPDATE_JOB from '@/graphql/UpdateJob.gql'
+import DELETE_JOB from '@/graphql/DeleteJob.gql'
 
 export default {
   data () {
@@ -115,6 +121,14 @@ export default {
         this.$router.replace({ name: 'user-listings' })
       }).catch((e) => {
         this.errors = e.graphQLErrors[0].extensions.validation
+      })
+    },
+    deleteJob () {
+      this.$apollo.mutate({
+        mutation: DELETE_JOB,
+        variables: { ...this.me.jobs[0] }
+      }).then(() => {
+        this.$router.replace({ name: 'user-listings' })
       })
     }
   }
