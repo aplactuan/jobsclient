@@ -111,6 +111,7 @@
 <script>
 import ALL_TAGS from '@/graphql/AllTags.gql'
 import CREATE_JOB_WITH_USER from '@/graphql/CreateJobWithUser.gql'
+import CREATE_JOB from '@/graphql/CreateJob.gql'
 
 export default {
   data () {
@@ -139,8 +140,15 @@ export default {
   },
 
   methods: {
-    createListing() {
-
+    createListing () {
+      this.$apollo.mutate({
+        mutation: CREATE_JOB,
+        variables: this.form
+      }).then(() => {
+        this.$router.replace({ name: 'index' })
+      }).catch(e => {
+        this.errors = e.graphQLErrors[0].extensions.validation
+      })
     },
     createListingWithUser() {
       this.$apollo.mutate({
